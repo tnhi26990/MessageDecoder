@@ -1,0 +1,9 @@
+1. Display the frequency analysis of the ciphertext.
+When the user runs the program, the main method will call these functions respectively: txtToString(), countCharacter(), and sortAndConvertToVector() to count the occurrence of each letter in the ciphertext. It then calls the countEnglishFrequency() function to generate the initial key and passes the key to the decryptCipher() function to produce the first plaintext.
+
+2. Use the program to guess the cipher key and decrypt the text using it.
+After the initial key and plaintext are generated, the main method will call the validWordCount() function to calculate the number of valid words in the first plaintext. Next, it will call the shiftKey() function, which takes the initial key and the number of valid words in the first plaintext to generate the best key, which means the key has the highest number of valid words. It passes the best key to the decryptCipher() function to create another plaintext. 
+*Note: The shiftKey() function involves many rounds of swapping letters, plaintext generations and score comparisons, so it may take the program a little more than one minute to print the best key and the decrypted ciphertext to the console. 
+
+3. Decrypt the text using a key entered by the user.
+After both of these decrypted ciphertexts and keys have been printed to the user, the user is prompted with two questions: what character they would like to swap, and what they would like the character to swap to. After the user enters their input, a new key and plaintext is printed based on the user's input. A word count that counts the amount of valid words is also printed and it updates according to the user’s input. If the user wants to end the session, they need to type the character '!' and the program will stop.
