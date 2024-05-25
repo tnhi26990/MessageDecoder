@@ -1,5 +1,5 @@
 #include <algorithm>
-#include <bits/stdc++.h>
+#include <unordered_map>
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -8,9 +8,9 @@ using namespace std;
 
 // creates a vector that pairs each letter in the cipher to the corresponding
 // english letter based on letter frequency
-vector<pair<char, char>>
-countEnglishFrequency(vector<pair<char, int>> &sortedFrequency) {
-  vector<pair<char, char>> englishFrequency;
+vector<pair<char, char> >
+countEnglishFrequency(vector<pair<char, int> > &sortedFrequency) {
+  vector<pair<char, char> > englishFrequency;
   char letterFrequency[26] = {'E', 'T', 'A', 'O', 'I', 'N', 'S', 'H', 'R',
                               'D', 'L', 'C', 'U', 'M', 'W', 'F', 'G', 'Y',
                               'P', 'B', 'V', 'K', 'J', 'X', 'Q', 'Z'};
@@ -68,7 +68,7 @@ vector<string> txtToVector() {
 
 // decrypts the cipher string by replacing each character based on it's english
 // frequency corresponding character and returns a decrypted string
-string decryptCipher(vector<pair<char, char>> &englishFrequency) {
+string decryptCipher(vector<pair<char, char> > &englishFrequency) {
   string eCipher = txtToString();
   string decryptedCipher;
 
@@ -118,7 +118,7 @@ int validWordCount(string &cipher, vector<string> &dictionary) {
 }
 
 //according to what character the analyst wants swap, updates the key and cypher appropriately
-vector<pair<char, char>> swapKeyCharacterByUser(vector<pair<char, char>> &key, char &characterToMap, char &characterToMapTo) {
+vector<pair<char, char> > swapKeyCharacterByUser(vector<pair<char, char> > &key, char &characterToMap, char &characterToMapTo) {
   char justSwapped;
   char toReplace;
   for (auto &character : key) {
@@ -138,22 +138,21 @@ vector<pair<char, char>> swapKeyCharacterByUser(vector<pair<char, char>> &key, c
 }
 
 //sorts based on value and converts from unordered map to vector
-vector<pair<char, int>>
+vector<pair<char, int> >
 sortAndConvertToVector(unordered_map<char, int> &characterCount) {
-  vector<pair<char, int>> sortedFrequency(characterCount.begin(),
+  vector<pair<char, int> > sortedFrequency(characterCount.begin(),
                                           characterCount.end());
-  std::sort(sortedFrequency.begin(), sortedFrequency.end(),
-            [](const auto &left, const auto &right) {
-              return left.second > right.second;
-            });
+  std::sort(sortedFrequency.begin(), sortedFrequency.end(), [](const auto &left, const auto &right) {
+      return left.second > right.second;
+  });
   return sortedFrequency;
 }
 
 //programmatically permutes through key to yield as best a key and cypher to the analyst
-vector<pair<char, char>> shiftKey(vector<pair<char, char>> &key, int count) {
+vector<pair<char, char> > shiftKey(vector<pair<char, char> > &key, int count) {
   vector<string> dictionary = txtToVector();
-  vector<pair<char, char>> tempKey = key;
-  vector<pair<char, char>> bestKey = key;
+  vector<pair<char, char> > tempKey = key;
+  vector<pair<char, char> > bestKey = key;
   int bestScore = count;
   for (int i = 0; i < tempKey.size() - 1; i++) {
     for (int j = i + 1; j < tempKey.size(); j++) {
@@ -179,8 +178,8 @@ int main() {
   vector<string> dictionary = txtToVector();
   string cipherText = txtToString();
   unordered_map<char, int> cipherCharacterCount = countCharacter(cipherText);
-  vector<pair<char, int>> sortedCipherVector = sortAndConvertToVector(cipherCharacterCount);
-  vector<pair<char, char>> initialKey = countEnglishFrequency(sortedCipherVector);
+  vector<pair<char, int> > sortedCipherVector = sortAndConvertToVector(cipherCharacterCount);
+  vector<pair<char, char> > initialKey = countEnglishFrequency(sortedCipherVector);
 
   cout << '\n' << endl;
   cout << "The frequency analysis of the ciphertext: " << endl;
@@ -208,7 +207,7 @@ int main() {
 
   cout << '\n' << endl;
   cout << "The following is the best key and decrypted ciphertext after shifting programmatically. It may take the program a little more than one minute to print them to console because of the shiftKey() function." << '\n';
-  vector<pair<char, char>> bestKey = shiftKey(initialKey, bestCount);
+  vector<pair<char, char> > bestKey = shiftKey(initialKey, bestCount);
   cout << '\n' << endl;
   cout << "Best key: " << endl;
   for (auto &it : bestKey) {
@@ -239,7 +238,7 @@ int main() {
     cin >> swapTo;
     char swapFromUpperCase = toupper(swapFrom);
     char swapToUpperCase = toupper(swapTo);
-    vector<pair<char, char>> key = swapKeyCharacterByUser(bestKey, swapFromUpperCase, swapToUpperCase);
+    vector<pair<char, char> > key = swapKeyCharacterByUser(bestKey, swapFromUpperCase, swapToUpperCase);
     cout << '\n' << endl;
     cout << "New key: " << endl;
     for (auto &it : key) {
